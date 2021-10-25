@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Proposal;
+use App\Models\Ormawa;
 
 class ProposalController extends Controller
 {
   public function index(){
     $proposal = Proposal::get();
-    return view('proposal/index')->with(['proposal' => $proposal]);
+    $ormawa = Ormawa::get();
+    return view('proposal/index')->with(['proposal' => $proposal,'ormawa' => $ormawa]);
   }
   public function create(){
-
-    return view('proposal/create');
+      $ormawa = Ormawa::get();
+    return view('proposal/create')->with(['ormawa' => $ormawa]);
   }
   public function download($file){
 
@@ -27,9 +29,9 @@ class ProposalController extends Controller
       return response()->download($file, $proposal->lampiran);
   }
   public function edit($id){
-
+    $ormawa = Ormawa::get();
     $proposal = Proposal::where('id', $id)->firstOrFail();
-    return view('proposal/edit')->with(['proposal' => $proposal]);
+    return view('proposal/edit')->with(['proposal' => $proposal,'ormawa' => $ormawa]);
   }
 
   public function save(Request $request){
@@ -81,6 +83,55 @@ class ProposalController extends Controller
       return $params;
   }
 
+  public function diterima($id){
+
+
+    $proposal = Proposal::where('id', $id)->update($this->paramAcc());
+
+    return redirect()->route('proposal')->with(['message_success' => 'Berhasil menyutujui data']);
+  }
+  public function ditolak($id){
+
+
+    $proposal = Proposal::where('id', $id)->update($this->paramDitolak());
+
+    return redirect()->route('proposal')->with(['message_success' => 'Berhasil menolak data']);
+  }
+  private function paramAcc()
+  {
+
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Diterima';
+    }
+
+    return $params;
+  }
+  private function paramDitolak()
+  {
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Ditolak';
+    }
+
+    return $params;
+  }
   private function fileProcessing($request,$file)
   {
       $dest_path = storage_path('app/proposal/');

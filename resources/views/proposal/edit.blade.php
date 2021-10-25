@@ -14,9 +14,13 @@
       <label>Nama Proposal</label>
       <input type="text" name="nama_proposal" value="{{$proposal->nama_proposal}}"  placeholder="Nama Proposal" class="form-control">
       <label>Nama Ormawa</label>
-      <input type="text" name="nama_ormawa" value="{{$proposal->nama_ormawa}}"  placeholder="Nama ORMAWA" class="form-control">
+      <select name="nama_ormawa" class="form-control">
+        @foreach($ormawa as $o)
+          <option value="{{$o->nama_ormawa}}" @if($o->nama_ormawa == $proposal->nama_ormawa) selected @endif>{{$o->nama_ormawa}}</option>
+        @endforeach
+      </select>
       <label>Lampiran<small> Harus berupa : PDF,DOC,atau DOCX dan ukuran maksimal 10 MB</small></label>
-      <input type="file" name="lampiran"  class="form-control">
+      <input type="file"  accept="application/pdf,application/msword, application/vnd.ms-excel" name="lampiran"  class="form-control">
       <span class="badge badge-info">Kosongkan lampiran jika tidak ingin mengubah</span>
     <hr>
       <button type="submit" class="btn btn-success">Simpan</button>

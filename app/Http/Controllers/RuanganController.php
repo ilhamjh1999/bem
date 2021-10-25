@@ -63,6 +63,56 @@ class RuanganController extends Controller
 
     return redirect()->route('ruangan')->with(['message_success' => 'Berhasil Menghapus data']);
   }
+
+  public function diterima($id){
+
+
+    $proposal = Ruangan::where('id', $id)->update($this->paramAcc());
+
+    return redirect()->route('ruangan')->with(['message_success' => 'Berhasil menyutujui data']);
+  }
+  public function ditolak($id){
+
+
+    $proposal = Ruangan::where('id', $id)->update($this->paramDitolak());
+
+    return redirect()->route('ruangan')->with(['message_success' => 'Berhasil menolak data']);
+  }
+  private function paramAcc()
+  {
+
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Diterima';
+    }
+
+    return $params;
+  }
+  private function paramDitolak()
+  {
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Ditolak';
+    }
+
+    return $params;
+  }
   private function params($request)
   {
       $params = [

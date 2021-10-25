@@ -38,10 +38,18 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="../widgets.html" class="nav-link">
+      <a href="{{route('catatan_surat')}}" class="nav-link">
         <i class="nav-icon fas fa-envelope-open-text"></i>
         <p>
       Catatan Surat
+        </p>
+      </a>
+
+    <li class="nav-item">
+      <a href="{{route('ormawa')}}" class="nav-link">
+        <i class="nav-icon fas fa-sitemap"></i>
+        <p>
+      Kelola ORMAWA
         </p>
       </a>
     </li>

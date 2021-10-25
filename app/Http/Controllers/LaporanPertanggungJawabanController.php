@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pertanggungjawaban;
+use App\Models\Ormawa;
+
 
 class LaporanPertanggungjawabanController extends Controller
 {
@@ -12,13 +14,13 @@ class LaporanPertanggungjawabanController extends Controller
     return view('pertanggungjawaban/index')->with(['pertanggungjawaban' => $pertanggungjawaban]);
   }
   public function create(){
-
-    return view('pertanggungjawaban/create');
+    $ormawa = Ormawa::get();
+    return view('pertanggungjawaban/create')->with(['ormawa' => $ormawa]);
   }
   public function edit($id){
-
+    $ormawa = Ormawa::get();
     $pertanggungjawaban = Pertanggungjawaban::where('id', $id)->firstOrFail();
-    return view('pertanggungjawaban/edit')->with(['pertanggungjawaban' => $pertanggungjawaban]);
+    return view('pertanggungjawaban/edit')->with(['pertanggungjawaban' => $pertanggungjawaban,'ormawa' => $ormawa]);
   }
 
   public function save(Request $request){
@@ -28,7 +30,7 @@ class LaporanPertanggungjawabanController extends Controller
                   'jabatan'  => 'required',
                   'nama_ormawa'  => 'required',
                   'nama_laporan_pertanggungjawaban'  => 'required',
-                  'lampiran'  => 'nullable|mimes:doc,docx,pdf|max:10000',
+                  'lampiran'  => 'nullable|mimes:doc,docx,pdf,xlsx,xls|max:10000',
                ]);
     $proposal = Pertanggungjawaban::create($this->params($request));
 
@@ -55,7 +57,7 @@ class LaporanPertanggungjawabanController extends Controller
                     'jabatan'  => 'required',
                     'nama_ormawa'  => 'required',
                     'nama_laporan_pertanggungjawaban'  => 'required',
-                    'lampiran'  => 'nullable|mimes:doc,docx,pdf|max:10000',
+                    'lampiran'  => 'nullable|mimes:doc,docx,pdf,xlsx,xls|max:10000',
                ]);
     $proposal = Pertanggungjawaban::where('id', $request->id)->update($this->params($request));
 
@@ -69,6 +71,57 @@ class LaporanPertanggungjawabanController extends Controller
 
     return redirect()->route('pertanggungjawaban')->with(['message_success' => 'Berhasil Menghapus data']);
   }
+
+  public function diterima($id){
+
+
+    $proposal = Pertanggungjawaban::where('id', $id)->update($this->paramAcc());
+
+    return redirect()->route('pertanggungjawaban')->with(['message_success' => 'Berhasil menyutujui data']);
+  }
+  public function ditolak($id){
+
+
+    $proposal = Pertanggungjawaban::where('id', $id)->update($this->paramDitolak());
+
+    return redirect()->route('pertanggungjawaban')->with(['message_success' => 'Berhasil menolak data']);
+  }
+  private function paramAcc()
+  {
+
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Diterima';
+    }
+
+    return $params;
+  }
+  private function paramDitolak()
+  {
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Ditolak';
+    }
+
+    return $params;
+  }
+
   private function params($request)
   {
       $params = [

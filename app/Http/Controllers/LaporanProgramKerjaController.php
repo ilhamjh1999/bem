@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProgramKerja;
+use App\Models\Ormawa;
 
 class LaporanProgramKerjaController extends Controller
 {
@@ -12,13 +13,13 @@ class LaporanProgramKerjaController extends Controller
     return view('program_kerja/index')->with(['program_kerja' => $program_kerja]);
   }
   public function create(){
-
-    return view('program_kerja/create');
+    $ormawa = Ormawa::get();
+    return view('program_kerja/create')->with(['ormawa' => $ormawa]);
   }
   public function edit($id){
-
+    $ormawa = Ormawa::get();
     $program_kerja = ProgramKerja::where('id', $id)->firstOrFail();
-    return view('program_kerja/edit')->with(['program_kerja' => $program_kerja]);
+    return view('program_kerja/edit')->with(['program_kerja' => $program_kerja,'ormawa' => $ormawa]);
   }
 
   public function save(Request $request){
@@ -28,7 +29,7 @@ class LaporanProgramKerjaController extends Controller
                   'jabatan'  => 'required',
                   'nama_ormawa'  => 'required',
                   'nama_laporan_kegiatan'  => 'required',
-                  'lampiran'  => 'nullable|mimes:doc,docx,pdf|max:10000',
+                  'lampiran'  => 'nullable|mimes:doc,docx,pdf,xlsx,xls|max:10000',
                ]);
     $proposal = ProgramKerja::create($this->params($request));
 
@@ -55,7 +56,7 @@ class LaporanProgramKerjaController extends Controller
                     'jabatan'  => 'required',
                     'nama_ormawa'  => 'required',
                     'nama_laporan_kegiatan'  => 'required',
-                    'lampiran'  => 'nullable|mimes:doc,docx,pdf|max:10000',
+                    'lampiran'  => 'nullable|mimes:doc,docx,pdf,xlsx,xls|max:10000',
                ]);
     $proposal = ProgramKerja::where('id', $request->id)->update($this->params($request));
 
@@ -69,6 +70,56 @@ class LaporanProgramKerjaController extends Controller
 
     return redirect()->route('program_kerja')->with(['message_success' => 'Berhasil Menghapus data']);
   }
+  public function diterima($id){
+
+
+    $proposal = ProgramKerja::where('id', $id)->update($this->paramAcc());
+
+    return redirect()->route('program_kerja')->with(['message_success' => 'Berhasil menyutujui data']);
+  }
+  public function ditolak($id){
+
+
+    $proposal = ProgramKerja::where('id', $id)->update($this->paramDitolak());
+
+    return redirect()->route('program_kerja')->with(['message_success' => 'Berhasil menolak data']);
+  }
+  private function paramAcc()
+  {
+
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Diterima';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Diterima';
+    }
+
+    return $params;
+  }
+  private function paramDitolak()
+  {
+    if(auth()->user()->role == "bem")
+    {
+      $params['status_bem'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "kemahasiswaan")
+    {
+      $params['status_kemahasiswaan'] = 'Ditolak';
+    }
+    elseif(auth()->user()->role == "dpm")
+    {
+      $params['status_dpm'] = 'Ditolak';
+    }
+
+    return $params;
+  }
+
   private function params($request)
   {
       $params = [

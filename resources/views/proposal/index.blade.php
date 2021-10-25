@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title','Laporan Program Kerja')
+@section('title','Pengajuan Proposal')
 @section('content')
 <div class="row">
   <div class="col-md-3">
-    <a href="{{route('program_kerja.create')}}" class="btn btn-success btn-block">Tambah Pengajuan Proposal</a>
+    <a href="{{route('proposal.create')}}" class="btn btn-success btn-block">Tambah Pengajuan Proposal</a>
     <hr>
   </div>
   <div class="col-md-12">
@@ -50,8 +50,18 @@
 
                 </td>
                 <td>
-                  <a href="{{route('proposal.edit',['id' => $p->id])}}" class="btn btn-warning">EDIT</a>
-                  <a href="{{route('proposal.delete',['id' => $p->id])}}" onclick="return confirm('Anda ingin menghapus ini?');" class="btn btn-danger">DELETE</a>
+
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                  <a title="Ubah Data" href="{{route('proposal.edit',['id' => $p->id])}}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                  <a  title="Hapus Data" href="{{route('proposal.delete',['id' => $p->id])}}" onclick="return confirm('Anda ingin menghapus ini?');" class="btn btn-danger"><i class="fas fa-trash"></i></a><br>
+
+                  </div>
+                  @if(auth()->user()->role != 'superadmin')
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <a title="Setujui" href="{{route('proposal.diterima',['id' => $p->id])}}" onclick="return confirm('Anda ingin Menyetujui Ini?');" class="btn btn-success"><i class="fas fa-check"></i></a>
+                    <a title="Tolak" href="{{route('proposal.ditolak',['id' => $p->id])}}" onclick="return confirm('Anda ingin Menolak Ini?');" class="btn btn-outline-danger"><i class="fas fa-times"></i></a>
+                  </div>
+                @endif
                 </td>
               </tr>
             @endforeach

@@ -20,7 +20,7 @@
             @foreach ($pertanggungjawaban as $p)
               <tr>
                 <td>{{$p->nama}}</td>
-                <td>{{$p->jabatan}}</td>
+                <td>{{$p->jabatan}} - {{$p->nama_ormawa}}</td>
                 <td>{{$p->nama_laporan_pertanggungjawaban}}</td>
                 <td><a class="btn btn-primary" href="{{route('pertanggungjawaban.download',['file' => $p->lampiran])}}">Download</a></td>
                 <td>
@@ -35,8 +35,17 @@
 
                 </td>
                 <td>
-                  <a href="{{route('pertanggungjawaban.edit',['id' => $p->id])}}" class="btn btn-warning">EDIT</a>
-                  <a href="{{route('pertanggungjawaban.delete',['id' => $p->id])}}" onclick="return confirm('Anda ingin menghapus ini?');" class="btn btn-danger">DELETE</a>
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                  <a title="Ubah Data" href="{{route('pertanggungjawaban.edit',['id' => $p->id])}}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                  <a  title="Hapus Data" href="{{route('pertanggungjawaban.delete',['id' => $p->id])}}" onclick="return confirm('Anda ingin menghapus ini?');" class="btn btn-danger"><i class="fas fa-trash"></i></a><br>
+
+                  </div>
+                    @if(auth()->user()->role == 'bem')
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                    <a title="Setujui" href="{{route('pertanggungjawaban.diterima',['id' => $p->id])}}" onclick="return confirm('Anda ingin Menyetujui Ini?');" class="btn btn-success"><i class="fas fa-check"></i></a>
+                    <a title="Tolak" href="{{route('pertanggungjawaban.ditolak',['id' => $p->id])}}" onclick="return confirm('Anda ingin Menolak Ini?');" class="btn btn-outline-danger"><i class="fas fa-times"></i></a>
+                  </div>
+                @endif
                 </td>
               </tr>
             @endforeach
