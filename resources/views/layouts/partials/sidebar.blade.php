@@ -54,4 +54,13 @@
       </a>
     </li>
 
+    <li class="nav-item">
+      <a href="{{route('pengguna')}}" class="nav-link">
+        <i class="nav-icon fas fa-users"></i>
+        <p>
+      Kelola Pengguna
+        </p>
+      </a>
+    </li>
+
 </nav>

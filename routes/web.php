@@ -74,6 +74,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/save', [App\Http\Controllers\OrmawaController::class, 'save'])->name('ormawa.save');
         Route::get('/delete/{id}', [App\Http\Controllers\OrmawaController::class, 'delete'])->name('ormawa.delete');
     });
+
+    Route::prefix('pengguna')->group(function(){
+        Route::get('/', [App\Http\Controllers\PenggunaController::class, 'index'])->name('pengguna');
+        Route::get('/create', [App\Http\Controllers\PenggunaController::class, 'create'])->name('pengguna.create');
+        Route::get('/edit/{id}', [App\Http\Controllers\PenggunaController::class, 'edit'])->name('pengguna.edit');
+        Route::post('/update', [App\Http\Controllers\PenggunaController::class, 'update'])->name('pengguna.update');
+        Route::post('/save', [App\Http\Controllers\PenggunaController::class, 'save'])->name('pengguna.save');
+        Route::get('/delete/{id}', [App\Http\Controllers\PenggunaController::class, 'delete'])->name('pengguna.delete');
+    });
     Route::prefix('catatansurat')->group(function(){
         Route::get('/', [App\Http\Controllers\CatatanSuratController::class, 'index'])->name('catatan_surat');
         Route::get('/create', [App\Http\Controllers\CatatanSuratController::class, 'create'])->name('catatan_surat.create');
