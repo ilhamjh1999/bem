@@ -8,7 +8,12 @@ use App\Models\Ruangan;
 class RuanganController extends Controller
 {
   public function index(){
-    $ruangan = Ruangan::get();
+    if(!empty( $request->id ))
+    {
+      $ruangan = Ruangan::where('id', $request->id)->get();
+    } else{
+        $ruangan = Ruangan::get();
+    }
     return view('ruangan/index')->with(['ruangan' => $ruangan]);
   }
   public function create(){

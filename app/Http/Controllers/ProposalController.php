@@ -9,7 +9,13 @@ use App\Models\Ormawa;
 class ProposalController extends Controller
 {
   public function index(){
-    $proposal = Proposal::get();
+    if(!empty( $request->id ))
+    {
+      $proposal = Proposal::where('id', $request->id)->get();
+    } else{
+        $proposal = Proposal::get();
+    }
+    
     $ormawa = Ormawa::get();
     return view('proposal/index')->with(['proposal' => $proposal,'ormawa' => $ormawa]);
   }

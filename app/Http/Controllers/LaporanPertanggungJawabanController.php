@@ -9,8 +9,13 @@ use App\Models\Ormawa;
 
 class LaporanPertanggungjawabanController extends Controller
 {
-  public function index(){
-    $pertanggungjawaban = Pertanggungjawaban::get();
+  public function index(Request $request){
+    if(!empty( $request->id ))
+    {
+          $pertanggungjawaban = Pertanggungjawaban::where('id', $request->id)->get();
+    }else{
+      $pertanggungjawaban = Pertanggungjawaban::get();
+    }
     return view('pertanggungjawaban/index')->with(['pertanggungjawaban' => $pertanggungjawaban]);
   }
   public function create(){

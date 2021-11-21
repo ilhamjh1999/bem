@@ -8,8 +8,13 @@ use App\Models\Ormawa;
 
 class LaporanProgramKerjaController extends Controller
 {
-  public function index(){
-    $program_kerja = ProgramKerja::get();
+  public function index(Request $request){
+    if(!empty( $request->id ))
+    {
+      $program_kerja = ProgramKerja::where('id', $request->id)->get();
+    } else{
+        $program_kerja = ProgramKerja::get();
+    }
     return view('program_kerja/index')->with(['program_kerja' => $program_kerja]);
   }
   public function create(){

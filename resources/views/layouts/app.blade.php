@@ -46,58 +46,82 @@
       <li class="nav-item dropdown ">
           <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="true">
             <i class="far fa-bell"></i>
-            <span class="badge badge-danger navbar-badge">3</span>
+            <span class="badge badge-danger navbar-badge">{{Notifikasi::countNotif()}}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
+            @foreach(Notifikasi::showLapPertanggungjawaban() as $lpj)
+            <a href="{{route('pertanggungjawaban',['id' => $lpj->id])}}" class="dropdown-item">
               <!-- Message Start -->
               <div class="media">
-                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+
                 <div class="media-body">
                   <h3 class="dropdown-item-title">
-                    Brad Diesel
-                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                    {{$lpj->nama}} ({{$lpj->nama_ormawa}})
+
                   </h3>
-                  <p class="text-sm">Call me whenever you can...</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                  <p class="text-sm">{{$lpj->nama_laporan_pertanggungjawaban}}</p>
+                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{\Carbon\Carbon::createFromTimeStamp(strtotime($lpj->created_at))->diffForHumans()}}</p>
                 </div>
               </div>
               <!-- Message End -->
             </a>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    John Pierce
-                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">I got your message bro</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
+          @endforeach
+          @foreach(Notifikasi::showProposal() as $lpj)
+          <a href="{{route('proposal',['id' => $lpj->id])}}" class="dropdown-item">
+            <!-- Message Start -->
+            <div class="media">
+
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  {{$lpj->nama}} ({{$lpj->nama_ormawa}})
+
+                </h3>
+                <p class="text-sm">{{$lpj->nama_proposal}}</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{\Carbon\Carbon::createFromTimeStamp(strtotime($lpj->created_at))->diffForHumans()}}</p>
               </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Nora Silvester
-                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">The subject goes here</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+            </div>
+            <!-- Message End -->
+          </a>
+          <div class="dropdown-divider"></div>
+        @endforeach
+        @foreach(Notifikasi::showLapKegiatan() as $lpj)
+        <a href="{{route('program_kerja',['id' => $lpj->id])}}" class="dropdown-item">
+          <!-- Message Start -->
+          <div class="media">
+
+            <div class="media-body">
+              <h3 class="dropdown-item-title">
+                {{$lpj->nama}} ({{$lpj->nama_ormawa}})
+
+              </h3>
+              <p class="text-sm">{{$lpj->nama_laporan_kegiatan}}</p>
+              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{\Carbon\Carbon::createFromTimeStamp(strtotime($lpj->created_at))->diffForHumans()}}</p>
+            </div>
+          </div>
+          <!-- Message End -->
+        </a>
+        <div class="dropdown-divider"></div>
+      @endforeach
+        @foreach(Notifikasi::showRuangan() as $lpj)
+        <a href="{{route('ruangan',['id' => $lpj->id])}}" class="dropdown-item">
+          <!-- Message Start -->
+          <div class="media">
+
+            <div class="media-body">
+              <h3 class="dropdown-item-title">
+                {{$lpj->nama}} ({{$lpj->nama_ormawa}})
+
+              </h3>
+              <p class="text-sm">Ingin meminjam ruang {{$lpj->nama_ruang}}</p>
+              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> {{\Carbon\Carbon::createFromTimeStamp(strtotime($lpj->created_at))->diffForHumans()}}</p>
+            </div>
+          </div>
+          <!-- Message End -->
+        </a>
+        <div class="dropdown-divider"></div>
+      @endforeach
+
           </div>
         </li>
 
