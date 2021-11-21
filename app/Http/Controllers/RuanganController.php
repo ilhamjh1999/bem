@@ -86,34 +86,26 @@ class RuanganController extends Controller
   private function paramAcc()
   {
 
-    if(auth()->user()->role == "bem")
+    if(auth()->user()->role == "akademik")
     {
-      $params['status_bem'] = 'Diterima';
+      $params['status_akademik'] = 'Diterima';
     }
     elseif(auth()->user()->role == "kemahasiswaan")
     {
       $params['status_kemahasiswaan'] = 'Diterima';
-    }
-    elseif(auth()->user()->role == "dpm")
-    {
-      $params['status_dpm'] = 'Diterima';
     }
 
     return $params;
   }
   private function paramDitolak()
   {
-    if(auth()->user()->role == "bem")
+    if(auth()->user()->role == "akademik")
     {
-      $params['status_bem'] = 'Ditolak';
+      $params['status_akademik'] = 'Ditolak';
     }
     elseif(auth()->user()->role == "kemahasiswaan")
     {
-      $params['status_kemahasiswaan'] = 'Ditolak';
-    }
-    elseif(auth()->user()->role == "dpm")
-    {
-      $params['status_dpm'] = 'Ditolak';
+      $params['status_kemahasiswaan'] = 'Diterima';
     }
 
     return $params;

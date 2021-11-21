@@ -67,10 +67,10 @@ class NotifHelpers {
   {
     if(auth()->user()->role == 'kemahasiswaan')
     {
-        $count = Proposal::where('status_kemahasiswaan', 'menunggu')->count();
+        $count = Ruangan::where('status_kemahasiswaan', 'menunggu')->count();
     } elseif(auth()->user()->role == 'akademik')
     {
-        $count = Proposal::where('status_akademik', 'menunggu')->count();
+        $count = Ruangan::where('status_akademik', 'menunggu')->count();
     } else{
         $count = 0;
     }
@@ -129,10 +129,10 @@ class NotifHelpers {
   {
     if(auth()->user()->role == 'kemahasiswaan')
     {
-        $results = Proposal::where('status_kemahasiswaan', 'menunggu')->get();
+        $results = Ruangan::where('status_kemahasiswaan', 'menunggu')->get();
     } elseif(auth()->user()->role == 'akademik')
     {
-        $results = Proposal::where('status_akademik', 'menunggu')->get();
+        $results = Ruangan::where('status_akademik', 'menunggu')->get();
     } else{
         $results = [];
     }

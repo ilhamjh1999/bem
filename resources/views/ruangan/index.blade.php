@@ -45,7 +45,7 @@
 
                   </div>
 
-                @if(auth()->user()->role == 'kemahasiswaan')
+                @if(auth()->user()->role == 'kemahasiswaan' || auth()->user()->role == 'akademik')
                   <div class="btn-group" role="group" aria-label="Basic example">
                     <a title="Setujui" href="{{route('ruangan.diterima',['id' => $p->id])}}" onclick="return confirm('Anda ingin Menyetujui Ini?');" class="btn btn-success"><i class="fas fa-check"></i></a>
                     <a title="Tolak" href="{{route('ruangan.ditolak',['id' => $p->id])}}" onclick="return confirm('Anda ingin Menolak Ini?');" class="btn btn-outline-danger"><i class="fas fa-times"></i></a>
